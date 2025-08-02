@@ -20,12 +20,20 @@ export class TodoController {
 
   @Post()
   create(@Body() createTodoDto: CreateTodoDto, @Request() req) {
-    return this.todoService.create(createTodoDto, req.user.userId);
+    try {
+      return this.todoService.create(createTodoDto, req.user.userId);
+    } catch (error) {
+      return { error: 'Error creating todo: ' + error.message };
+    }
   }
 
   @Get()
   findAll(@Request() req) {
-    return this.todoService.findAll(req.user.userId);
+    try {
+      return this.todoService.findAll(req.user.userId);
+    } catch (error) {
+      return { error: 'Error fetching todos: ' + error.message };
+    }
   }
 
   @Patch(':id')
@@ -34,6 +42,10 @@ export class TodoController {
     @Body() updateTodoDto: UpdateTodoDto,
     @Request() req,
   ) {
-    return this.todoService.update(id, updateTodoDto, req.user.userId);
+    try {
+      return this.todoService.update(id, updateTodoDto, req.user.userId);
+    } catch (error) {
+      return { error: 'Error updating todo: ' + error.message };
+    }
   }
 }
